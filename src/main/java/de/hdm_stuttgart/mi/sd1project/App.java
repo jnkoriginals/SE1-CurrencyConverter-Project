@@ -3,6 +3,8 @@ package de.hdm_stuttgart.mi.sd1project;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+
 /**
  * A simple http://logging.apache.org/log4j/2.x demo,
  * see file src/main/resources/log4j2.xml for configuration options
@@ -17,14 +19,17 @@ public class App {
      *
      * @param args Yet unused
      */
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws IOException {
 
-       System.out.println("""
+
+        ApiDecoderClass.ApiDecoder();
+
+        /* System.out.println("""
          Hi there, let's have
          fun learning Java!""");
-        
-       log.debug("You may configure 'src/main/resources/log4j2.xml' ");
-       log.debug("for adapting both console and 'A1.log' file output");
+
+        log.debug("You may configure 'src/main/resources/log4j2.xml' ");
+        log.debug("for adapting both console and 'A1.log' file output"); */
     }
 
     /**
