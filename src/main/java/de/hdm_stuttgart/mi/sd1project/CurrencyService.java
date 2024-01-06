@@ -2,23 +2,22 @@ package de.hdm_stuttgart.mi.sd1project;
 
 import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
 
+public class CurrencyService {
 
-public class ApiDecoderClass {
+
 
     /**
      * Sends requests to exchangerates-api.com to retrieve conversion rates and supported currencies,
      * decodes the JSON responses, and processes the data.
      *
-     * @throws IOException if an I/O error occurs during HTTP request/response handling.
      */
-    public static void ApiDecoder() throws IOException {
+    public ApiResponse getData() {
         HttpClient httpClient = HttpClient.newHttpClient();
 
         // API endpoints for conversion rates and supported currencies.
@@ -38,28 +37,22 @@ public class ApiDecoderClass {
             String conversionRatesJson = httpConversionRatesResponse.body();
             String supportedCurJson = httpSupportedCurResponse.body();
 
+            ApiResponse apiResponse = new ApiResponse();
+
             // Deserializing JSON responses into ApiResponse objects.
-            ApiResponse apiResponse = gson.fromJson(conversionRatesJson, ApiResponse.class);
+            ApiResponse conversionResponse = gson.fromJson(conversionRatesJson, ApiResponse.class);
             ApiResponse supportedResponse = gson.fromJson(supportedCurJson, ApiResponse.class);
 
-            Map<String, Double> conversionRates = apiResponse.getConversionRates();
+            Map<String, Double> conversionRates = conversionResponse.getConversionRates();
+            apiResponse.setConversionRates(conversionRates);
+
             Map<String, String> supportedCodes = supportedResponse.getSupportedCurrencies();
+            apiResponse.setSupportedCurrencies(supportedCodes);
 
-            System.out.println(conversionRates);
-            System.out.println(conversionRates.get("EUR"));
-            System.out.println(supportedCodes);
-
-
-            System.out.println("Supported Currencies: ");
-            for (String key : supportedCodes.keySet()) {
-                System.out.println(key);
-            }
-
+            return apiResponse;
         } catch (Exception error) {
             System.out.println("Error: " + error);
+            return null;
         }
-
     }
-
-
 }

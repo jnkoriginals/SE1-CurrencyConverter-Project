@@ -26,7 +26,7 @@ public class ApiResponse {
      * The supported currencies with their corresponding codes.
      */
     @SerializedName("supported_codes")
-    private Map<String, String> supportedCurrency;
+    private Map<String, String> supportedCurrencies;
 
     /**
      * Gets the result status of the API response.
@@ -47,9 +47,24 @@ public class ApiResponse {
     }
 
     /**
+     * Sets the conversion rates for different currencies.
+     */
+    public void setConversionRates (Map<String, Double> conversionRates) {
+        this.conversionRates = conversionRates;
+    }
+
+    /**
      * Gets the supported currencies with their corresponding codes.
      *
      * @return A map containing currency codes as keys and currency names as values.
      */
-    public Map<String, String> getSupportedCurrencies() {return supportedCurrency; }
+    public Map<String, String> getSupportedCurrencies() {return supportedCurrencies; }
+
+    /**
+     * Sets the supported currencies with their corresponding codes.
+     */
+    public void setSupportedCurrencies (Map<String, String> supportedCurrencies) {
+        this.supportedCurrencies = supportedCurrencies;
+    }
+
 }
