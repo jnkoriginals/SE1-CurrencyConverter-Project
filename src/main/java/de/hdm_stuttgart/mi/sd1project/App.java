@@ -3,7 +3,6 @@ package de.hdm_stuttgart.mi.sd1project;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.Scanner;
@@ -22,16 +21,16 @@ public class App {
      * @param args Yet unused
      */
     public static void main(String[] args) throws IOException {
-        Converter converter = new Converter();
-        converter.showInterface();
+        InterfaceClass interfaceClass = new InterfaceClass();
+        interfaceClass.showInterface();
+
     }
 }
 
-class Converter {
+class InterfaceClass {
     private final CurrencyService currencyService;
 
-
-    public Converter() {
+    public InterfaceClass() {
         currencyService = new CurrencyService();
     }
 
@@ -73,6 +72,9 @@ class Converter {
                             System.out.println("Currency code incorrect. Check availability or typing.");
                         }
                     }
+                    System.out.println(baseCurrency);
+                    // TODO: set base currency;
+
                     String targetCurrency = "";
                     while (!supportedCodes.containsKey(targetCurrency) && !targetCurrency.equals("ALL")) {
                         System.out.println("\nEnter target currency code (type 'all' to convert to all currencies):");
@@ -83,12 +85,14 @@ class Converter {
                         }
                     }
                     System.out.println(targetCurrency);
+                    // TODO: set target currency;
 
                     System.out.println("\nEnter amount to convert:");
                     float amount = 0;
                     String amountInput = scanner.next().replace(",", ".");
                     try {
                         amount = Float.parseFloat(amountInput);
+                        // TODO: set amount to convert
                     } catch (Exception e) {
                         System.out.println("Amount is not a valid number. Please try again.");
                     }
@@ -96,9 +100,11 @@ class Converter {
                     if (!targetCurrency.equals("ALL")) {
                         // convert to target currency.
                         System.out.println(amount);
+                        // TODO: Convert to target currency
                     } else {
                         // Convert to all currencies.
                         System.out.println(amount);
+                        // TODO: Convert to all currencies
                         System.out.println("Converting to all currencies");
                     }
                 }

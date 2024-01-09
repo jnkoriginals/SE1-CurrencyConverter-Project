@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class CurrencyService {
 
-
+    ApiResponse apiResponse = new ApiResponse();
 
     /**
      * Sends requests to exchangerates-api.com to retrieve conversion rates and supported currencies,
@@ -37,7 +37,6 @@ public class CurrencyService {
             String conversionRatesJson = httpConversionRatesResponse.body();
             String supportedCurJson = httpSupportedCurResponse.body();
 
-            ApiResponse apiResponse = new ApiResponse();
 
             // Deserializing JSON responses into ApiResponse objects.
             ApiResponse conversionResponse = gson.fromJson(conversionRatesJson, ApiResponse.class);
@@ -55,4 +54,9 @@ public class CurrencyService {
             return null;
         }
     }
+
+    public void test() {
+        System.out.println(apiResponse.getConversionRates());
+    }
+    // TODO: implement currency calculator
 }
