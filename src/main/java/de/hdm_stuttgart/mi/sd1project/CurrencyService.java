@@ -6,11 +6,17 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class CurrencyService {
 
     ApiResponse apiResponse = new ApiResponse();
+
+    Map<String,Double> convertedResults = new HashMap<String,Double>();
+
 
     /**
      * Sends requests to exchangerates-api.com to retrieve conversion rates and supported currencies,
@@ -55,8 +61,24 @@ public class CurrencyService {
         }
     }
 
-    public void test() {
-        System.out.println(apiResponse.getConversionRates());
+    public void currencyConverter(
+            Boolean returnFullList,
+            String baseCurrency,
+            Double baseCurrencyAmount,
+            String targetCurrency
+            ) {
+        Map <String, Double> conversionRates = apiResponse.getConversionRates();
+        Double baseValue = (Double) conversionRates.get(baseCurrency);
+
+        if(returnFullList){
+            conversionRates.forEach((k,v)-> convertedResults.put(k,v /baseValue * baseCurrencyAmount));
+        }else {
+
+            Double targetValue = (Double) conversionRates.get(targetCurrency);
+            Double results = targetValue / baseValue * baseCurrencyAmount;
+
+            convertedResults.put(baseCurrency, baseCurrencyAmount);
+            convertedResults.put(targetCurrency, results);
+        }
     }
-    // TODO: implement currency calculator
 }

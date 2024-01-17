@@ -4,8 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * A simple http://logging.apache.org/log4j/2.x demo,
@@ -28,6 +30,7 @@ public class App {
 }
 
 class InterfaceClass {
+
     private final CurrencyService currencyService;
 
     public InterfaceClass() {
@@ -39,6 +42,16 @@ class InterfaceClass {
         boolean exit = false;
 
         ApiResponse currencyDataResponse = currencyService.getData();
+
+        //to test currencyConverter:
+        Boolean returnfullList = false;
+        String baseCurrency1 = "RUB";
+        Double baseCurrencyAmount1 = 15.00;
+        String targetCurrency1 = "EUR";
+        currencyService.currencyConverter(returnfullList,baseCurrency1,baseCurrencyAmount1,targetCurrency1);
+        System.out.println("\n| "+currencyService.convertedResults);
+        //
+
 
         Map<String, String> supportedCodes = currencyDataResponse.getSupportedCurrencies();
 
