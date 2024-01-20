@@ -41,7 +41,6 @@ public class PDFConverter {
 
         PdfWriter PdfWriter = new PdfWriter(fileName);
         PdfDocument pdfDocument = new PdfDocument(PdfWriter);
-        pdfDocument.addNewPage();
         Document document = new Document(pdfDocument);
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
