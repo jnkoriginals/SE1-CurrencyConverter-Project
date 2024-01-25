@@ -1,13 +1,9 @@
 package de.hdm_stuttgart.mi.sd1project;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  * A simple http://logging.apache.org/log4j/2.x demo,
@@ -15,8 +11,6 @@ import java.util.Set;
  * and A1.log containing debugging output.
  */
 public class App {
-    static private final Logger log = LogManager.getLogger(App.class);
-
     /**
      * Your application's main entry point.
      *
@@ -25,7 +19,6 @@ public class App {
     public static void main(String[] args) throws IOException {
         InterfaceClass interfaceClass = new InterfaceClass();
         interfaceClass.showInterface();
-
     }
 }
 
@@ -37,27 +30,21 @@ class InterfaceClass {
         currencyService = new CurrencyService();
     }
 
-    public void showInterface() {
+    public void showInterface() throws FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
         ApiResponse currencyDataResponse = currencyService.getData();
-
-        //to test currencyConverter:
-        Boolean returnfullList = false;
-        String baseCurrency1 = "RUB";
-        Double baseCurrencyAmount1 = 15.00;
-        String targetCurrency1 = "EUR";
-        currencyService.currencyConverter(returnfullList,baseCurrency1,baseCurrencyAmount1,targetCurrency1);
-        System.out.println("\n| "+currencyService.convertedResults);
-        //
-
 
         Map<String, String> supportedCodes = currencyDataResponse.getSupportedCurrencies();
 
         System.out.println("\n+++++++++++++++++++++");
         System.out.println("  Currency Converter ");
         System.out.println("+++++++++++++++++++++");
+
+        String baseCurrency = "";
+        Double baseCurrencyAmount = null;
+        String targetCurrency = "";
 
         while (!exit) {
             System.out.println("\nAvailable Options:");
@@ -76,7 +63,11 @@ class InterfaceClass {
                     }
                 }
                 case "2" -> {
-                    String baseCurrency = "";
+                    baseCurrency = "";
+                    baseCurrencyAmount = null;
+                    targetCurrency = "";
+                    currencyService.convertedResults.clear();
+
                     while (!supportedCodes.containsKey(baseCurrency)) {
                         System.out.println("\nEnter base currency code:");
                         baseCurrency = scanner.next().toUpperCase();
@@ -85,10 +76,7 @@ class InterfaceClass {
                             System.out.println("Currency code incorrect. Check availability or typing.");
                         }
                     }
-                    System.out.println(baseCurrency);
-                    // TODO: set base currency;
-
-                    String targetCurrency = "";
+                    System.out.println("Base currency code set to: " + baseCurrency);
                     while (!supportedCodes.containsKey(targetCurrency) && !targetCurrency.equals("ALL")) {
                         System.out.println("\nEnter target currency code (type 'all' to convert to all currencies):");
                         targetCurrency = scanner.next().toUpperCase();
@@ -97,33 +85,41 @@ class InterfaceClass {
                             System.out.println("Currency code incorrect. Check availability or typing.");
                         }
                     }
-                    System.out.println(targetCurrency);
-                    // TODO: set target currency;
+                    System.out.println("Target currency code set to: " + targetCurrency);
 
                     System.out.println("\nEnter amount to convert:");
                     float amount = 0;
                     String amountInput = scanner.next().replace(",", ".");
                     try {
                         amount = Float.parseFloat(amountInput);
-                        // TODO: set amount to convert
+                        baseCurrencyAmount = (double) amount;
                     } catch (Exception e) {
                         System.out.println("Amount is not a valid number. Please try again.");
                     }
-                    // convert to target currency.
+
                     if (!targetCurrency.equals("ALL")) {
                         // convert to target currency.
-                        System.out.println(amount);
-                        // TODO: Convert to target currency
+                        currencyService.currencyConverter(false,baseCurrency,baseCurrencyAmount,targetCurrency);
+                        System.out.println(amount + " " + baseCurrency + " are:");
+                        for (String key : currencyService.convertedResults.keySet()) {
+                            System.out.println(currencyService.convertedResults.get(key) + " " +  key);
+                        }
                     } else {
                         // Convert to all currencies.
-                        System.out.println(amount);
-                        // TODO: Convert to all currencies
-                        System.out.println("Converting to all currencies");
+                        currencyService.currencyConverter(true,baseCurrency,baseCurrencyAmount,targetCurrency);
+                        System.out.println(amount + " " + baseCurrency + " are:");
+                        for (String key : currencyService.convertedResults.keySet()) {
+                            System.out.println(currencyService.convertedResults.get(key) + " " +  key);
+                        }
                     }
                 }
                 case "3" -> {
-                    // TODO: PDF Export
-                    System.out.println("Not yet implemented..");
+                    if (baseCurrency != null && baseCurrencyAmount != null) {
+                        PDFConverter pdfConverter = new PDFConverter();
+                        pdfConverter.ConvertToPDF(baseCurrency, baseCurrencyAmount, currencyService.convertedResults);
+                    } else {
+                        System.out.println("Please convert before export.");
+                    }
                 }
                 case "0" -> {
                     System.out.println("Good Bye!");
