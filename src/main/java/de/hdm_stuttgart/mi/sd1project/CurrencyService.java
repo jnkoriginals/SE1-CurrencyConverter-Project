@@ -6,10 +6,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+
 
 public class CurrencyService {
 
@@ -70,15 +69,15 @@ public class CurrencyService {
         Map <String, Double> conversionRates = apiResponse.getConversionRates();
         Double baseValue = (Double) conversionRates.get(baseCurrency);
 
-        if(returnFullList){
-            conversionRates.forEach((k,v)-> convertedResults.put(k,v /baseValue * baseCurrencyAmount));
-        }else {
+        if (returnFullList) {
+            conversionRates.forEach((k,v)-> convertedResults.put(k, (double) Math.round((v /baseValue * baseCurrencyAmount)*100)/100));
+        } else {
 
             Double targetValue = (Double) conversionRates.get(targetCurrency);
             Double results = targetValue / baseValue * baseCurrencyAmount;
 
-            convertedResults.put(baseCurrency, baseCurrencyAmount);
-            convertedResults.put(targetCurrency, results);
+            // convertedResults.put(baseCurrency, baseCurrencyAmount);
+            convertedResults.put(targetCurrency, (double) Math.round(results * 100)/100);
         }
     }
 }
