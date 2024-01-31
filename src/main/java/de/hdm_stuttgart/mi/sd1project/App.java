@@ -117,6 +117,7 @@ class InterfaceClass {
                     if (baseCurrency != null && baseCurrencyAmount != null) {
                         PDFConverter pdfConverter = new PDFConverter();
                         pdfConverter.ConvertToPDF(baseCurrency, baseCurrencyAmount, currencyService.convertedResults);
+                        System.out.println("Export successful as " + PDFConverter.fileName + ".");
                     } else {
                         System.out.println("Please convert before export.");
                     }
