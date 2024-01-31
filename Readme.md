@@ -1,4 +1,4 @@
-# Currency Converter Project
+# Currency Converter
 
 This project is a simple Java application that provides currency conversion functionality using the exchangerates-api.com service.
 
