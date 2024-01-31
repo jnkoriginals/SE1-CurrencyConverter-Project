@@ -34,7 +34,7 @@ class InterfaceClass {
 
         String baseCurrency = "";
         Double baseCurrencyAmount = null;
-        String targetCurrency = "";
+        String targetCurrency;
 
         while (!exit) {
             System.out.println("\nAvailable Options:");
@@ -104,7 +104,7 @@ class InterfaceClass {
                     }
                 }
                 case "3" -> {
-                    if (baseCurrency != null && baseCurrencyAmount != null) {
+                    if (baseCurrencyAmount != null) {
                         PDFConverter pdfConverter = new PDFConverter();
                         pdfConverter.ConvertToPDF(baseCurrency, baseCurrencyAmount, currencyService.convertedResults);
                         System.out.println("Export successful as " + PDFConverter.fileName + ".");

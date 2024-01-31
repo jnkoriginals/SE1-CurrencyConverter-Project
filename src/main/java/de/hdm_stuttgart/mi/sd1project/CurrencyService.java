@@ -14,7 +14,7 @@ public class CurrencyService {
 
     ApiResponse apiResponse = new ApiResponse();
 
-    Map<String,Double> convertedResults = new HashMap<String,Double>();
+    Map<String,Double> convertedResults = new HashMap<>();
 
 
     /**
@@ -74,14 +74,14 @@ public class CurrencyService {
             String targetCurrency
             ) {
         Map <String, Double> conversionRates = apiResponse.getConversionRates();
-        Double baseValue = (Double) conversionRates.get(baseCurrency);
+        Double baseValue = conversionRates.get(baseCurrency);
 
         if (returnFullList) {
             conversionRates.forEach((k,v)-> convertedResults.put(k, (double) Math.round((v /baseValue * baseCurrencyAmount)*100)/100));
         } else {
 
-            Double targetValue = (Double) conversionRates.get(targetCurrency);
-            Double results = targetValue / baseValue * baseCurrencyAmount;
+            Double targetValue = conversionRates.get(targetCurrency);
+            double results = targetValue / baseValue * baseCurrencyAmount;
 
             // convertedResults.put(baseCurrency, baseCurrencyAmount);
             convertedResults.put(targetCurrency, (double) Math.round(results * 100)/100);
