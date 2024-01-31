@@ -16,39 +16,46 @@ import java.util.Map;
 import static com.itextpdf.layout.properties.HorizontalAlignment.CENTER;
 
 public class PDFConverter {
-
+    static String fileName; // File name for use in InterfaceClass
+    /**
+     * Generates a PDF document based on
+     * the last conversion prompt.
+     */
     public void ConvertToPDF(String baseCurrency, double baseAmount, Map<String, Double> results) throws FileNotFoundException {
 
-        final String FILENAME = "CurrencyConverter";
+        // Generating the documents file name based on possible previous exports.
+        final String FILENAMEBASE = "CurrencyConverter";
         int fileCounter = 1;
 
-        File fileOutput = new File(FILENAME + ".pdf");
+        File fileOutput = new File(FILENAMEBASE + ".pdf");
         if (fileOutput.exists()) {
             while (fileOutput.exists()) {
                 fileCounter++;
-                fileOutput = new File(FILENAME + fileCounter + ".pdf");
+                fileOutput = new File(FILENAMEBASE + fileCounter + ".pdf");
             }
         }
-
-        String fileName;
         if (fileCounter != 1) {
-            fileName = FILENAME + fileCounter + ".pdf";
+            fileName = FILENAMEBASE + fileCounter + ".pdf";
         } else {
-            fileName = FILENAME + ".pdf";
+            fileName = FILENAMEBASE + ".pdf";
         }
 
+        // Generating an empty PDF document.
         PdfWriter PdfWriter = new PdfWriter(fileName);
         PdfDocument pdfDocument = new PdfDocument(PdfWriter);
         Document document = new Document(pdfDocument);
 
+        // Creating formatters.
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         LocalDateTime now = LocalDateTime.now();
-        DecimalFormat df = new DecimalFormat("##.00");
+        DecimalFormat df = new DecimalFormat("##0.00");
 
+        // Adding title and current date/time to the PDF document.
         Paragraph date = new Paragraph("Exchange rates as of " + dtf.format(now));
         date.setTextAlignment(TextAlignment.CENTER);
         document.add(date);
 
+        // Generating a table containing results of previous conversion and adding it to the PDF.
         Table table = new Table(3);
         table.addCell("Base currency");
         table.addCell("Target currency");
@@ -66,6 +73,7 @@ public class PDFConverter {
         }
         table.setHorizontalAlignment(CENTER);
         document.add(table);
+
         document.close();
     }
 }
