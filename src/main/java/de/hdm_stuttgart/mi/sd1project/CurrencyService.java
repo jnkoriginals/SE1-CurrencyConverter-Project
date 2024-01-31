@@ -20,7 +20,6 @@ public class CurrencyService {
     /**
      * Sends requests to exchangerates-api.com to retrieve conversion rates and supported currencies,
      * decodes the JSON responses, and processes the data.
-     *
      */
     public ApiResponse getData() {
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -60,6 +59,14 @@ public class CurrencyService {
         }
     }
 
+    /**
+     * Converts an amount from one currency to another based on the fetched exchange rates.
+     *
+     * @param returnFullList Indicates whether to return conversion rates for all currencies.
+     * @param baseCurrency The currency from which the conversion starts.
+     * @param baseCurrencyAmount The amount in the base currency to be converted.
+     * @param targetCurrency The currency to which the amount is to be converted.
+     */
     public void currencyConverter(
             Boolean returnFullList,
             String baseCurrency,
