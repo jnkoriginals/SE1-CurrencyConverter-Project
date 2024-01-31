@@ -5,17 +5,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Scanner;
 
-/**
- * A simple http://logging.apache.org/log4j/2.x demo,
- * see file src/main/resources/log4j2.xml for configuration options
- * and A1.log containing debugging output.
- */
+
 public class App {
-    /**
-     * Your application's main entry point.
-     *
-     * @param args Yet unused
-     */
     public static void main(String[] args) throws IOException {
         InterfaceClass interfaceClass = new InterfaceClass();
         interfaceClass.showInterface();
@@ -23,7 +14,6 @@ public class App {
 }
 
 class InterfaceClass {
-
     private final CurrencyService currencyService;
 
     public InterfaceClass() {
